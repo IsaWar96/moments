@@ -1,3 +1,4 @@
+import * as Haptics from "expo-haptics";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
 import { router } from "expo-router";
@@ -46,8 +47,10 @@ export default function NewMemory() {
 
   function save() {
     if (title.trim() === "") {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
       return;
     }
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     addMemory(title.trim(), image, place);
     router.back();
   }
