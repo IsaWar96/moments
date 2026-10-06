@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { getMemory } from "../../memories";
 
 export default function MemoryDetails() {
@@ -17,6 +17,9 @@ export default function MemoryDetails() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{memory.title}</Text>
+      {memory.image && (
+        <Image source={{ uri: memory.image }} style={styles.image} />
+      )}
     </View>
   );
 }
@@ -29,5 +32,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
+    marginBottom: 16,
+  },
+  image: {
+    width: "100%",
+    height: 300,
+    borderRadius: 8,
   },
 });
