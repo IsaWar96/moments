@@ -25,7 +25,13 @@ export default function Index() {
         data={memories}
         keyExtractor={(memory) => memory.id}
         renderItem={({ item }) => (
-          <Text style={styles.memory}>{item.title}</Text>
+          <Pressable
+            onPress={() =>
+              router.push({ pathname: "/memory/[id]", params: { id: item.id } })
+            }
+          >
+            <Text style={styles.memory}>{item.title}</Text>
+          </Pressable>
         )}
         ListEmptyComponent={<Text>Inga minnen än</Text>}
       />

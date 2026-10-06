@@ -5,6 +5,7 @@ export default function RootLayout() {
     <Stack>
       <Stack.Screen name="index" options={{ title: "Moments" }} />
       <Stack.Screen name="new-memory" options={{ title: "Nytt minne" }} />
+      <Stack.Screen name="memory/[id]" options={{ title: "Minne" }} />
     </Stack>
   );
 }
