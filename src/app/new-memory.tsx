@@ -1,7 +1,9 @@
 import * as ImagePicker from "expo-image-picker";
+import * as Location from "expo-location";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
+  Alert,
   Image,
   Pressable,
   StyleSheet,
@@ -14,6 +16,7 @@ import { addMemory } from "../memories";
 export default function NewMemory() {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState<string | null>(null);
+  const [place, setPlace] = useState<string | null>(null);
 
   async function pickImage() {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -26,11 +29,26 @@ export default function NewMemory() {
     }
   }
 
+  async function addPlace() {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Ingen åtkomst",
+        "Appen behöver tillåtelse för att läsa din plats.",
+      );
+      return;
+    }
+
+    const position = await Location.getCurrentPositionAsync({});
+    const [address] = await Location.reverseGeocodeAsync(position.coords);
+    setPlace(address?.city ?? address?.region ?? "Okänd plats");
+  }
+
   function save() {
     if (title.trim() === "") {
       return;
     }
-    addMemory(title.trim(), image);
+    addMemory(title.trim(), image, place);
     router.back();
   }
 
@@ -43,11 +61,17 @@ export default function NewMemory() {
         onChangeText={setTitle}
       />
 
-      <Pressable style={styles.photoButton} onPress={pickImage}>
-        <Text style={styles.photoButtonText}>Välj foto</Text>
+      <Pressable style={styles.outlineButton} onPress={pickImage}>
+        <Text style={styles.outlineButtonText}>Välj foto</Text>
       </Pressable>
 
       {image && <Image source={{ uri: image }} style={styles.preview} />}
+
+      <Pressable style={styles.outlineButton} onPress={addPlace}>
+        <Text style={styles.outlineButtonText}>Lägg till plats</Text>
+      </Pressable>
+
+      {place && <Text style={styles.place}>📍 {place}</Text>}
 
       <Pressable style={styles.button} onPress={save}>
         <Text style={styles.buttonText}>Spara</Text>
@@ -69,7 +93,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 16,
   },
-  photoButton: {
+  outlineButton: {
     borderWidth: 1,
     borderColor: "#2563eb",
     padding: 14,
@@ -77,7 +101,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 16,
   },
-  photoButtonText: {
+  outlineButtonText: {
     color: "#2563eb",
     fontSize: 18,
   },
@@ -85,6 +109,10 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     borderRadius: 8,
+    marginBottom: 16,
+  },
+  place: {
+    fontSize: 18,
     marginBottom: 16,
   },
   button: {

@@ -17,6 +17,7 @@ export default function MemoryDetails() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{memory.title}</Text>
+      {memory.place && <Text style={styles.place}>📍 {memory.place}</Text>}
       {memory.image && (
         <Image source={{ uri: memory.image }} style={styles.image} />
       )}
@@ -32,6 +33,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
+    marginBottom: 8,
+  },
+  place: {
+    fontSize: 18,
     marginBottom: 16,
   },
   image: {
