@@ -1,12 +1,16 @@
 import { router } from "expo-router";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { addMemory } from "../memories";
 
 export default function NewMemory() {
   const [title, setTitle] = useState("");
 
   function save() {
-    console.log("Saving:", title);
+    if (title.trim() === "") {
+      return;
+    }
+    addMemory(title.trim());
     router.back();
   }
 

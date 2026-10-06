@@ -1,12 +1,17 @@
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-
-const memories = [
-  { id: "1", title: "Fika i Borås" },
-  { id: "2", title: "Promenad i parken" },
-];
+import { getMemories, type Memory } from "../memories";
 
 export default function Index() {
+  const [memories, setMemories] = useState<Memory[]>([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setMemories([...getMemories()]);
+    }, []),
+  );
+
   return (
     <View style={styles.container}>
       <Pressable
@@ -22,6 +27,7 @@ export default function Index() {
         renderItem={({ item }) => (
           <Text style={styles.memory}>{item.title}</Text>
         )}
+        ListEmptyComponent={<Text>Inga minnen än</Text>}
       />
     </View>
   );
