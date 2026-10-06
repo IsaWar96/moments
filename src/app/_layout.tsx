@@ -1,5 +1,10 @@
 import { Stack } from "expo-router";
 
 export default function RootLayout() {
-  return <Stack screenOptions={{ title: "Moments" }} />;
+  return (
+    <Stack>
+      <Stack.Screen name="index" options={{ title: "Moments" }} />
+      <Stack.Screen name="new-memory" options={{ title: "Nytt minne" }} />
+    </Stack>
+  );
 }
