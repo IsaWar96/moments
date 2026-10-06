@@ -1,9 +1,20 @@
-import { Text, View, StyleSheet } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+
+const minnen = [
+  { id: "1", titel: "Fika i Borås" },
+  { id: "2", titel: "Promenad i parken" },
+];
 
 export default function Index() {
   return (
     <View style={styles.container}>
-      <Text>Edit src/app/index.tsx to edit this screen.</Text>
+      <FlatList
+        data={minnen}
+        keyExtractor={(minne) => minne.id}
+        renderItem={({ item }) => (
+          <Text style={styles.minne}>{item.titel}</Text>
+        )}
+      />
     </View>
   );
 }
@@ -11,7 +22,10 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    padding: 16,
+  },
+  minne: {
+    fontSize: 18,
+    paddingVertical: 12,
   },
 });
